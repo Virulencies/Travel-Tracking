@@ -6,8 +6,8 @@ import './css/styles.scss';
 
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/turing-logo.png'
-import { fetchTravelerData, fetchTripsData } from './apiCalls.js';
-import { displayTravelerDashboard, displayTravelerInfo, displayTrips, displayLoginError } from './domUpdates.js'
+import { fetchTravelerData, fetchTripsData, fetchDestinationsData } from './apiCalls.js';
+import { displayTravelerDashboard, displayTravelerInfo, displayTrips, displayLoginError, displayTotalSpentPerYear } from './domUpdates.js'
 
 console.log('This is the JavaScript entry file - your code begins here.');
 
@@ -30,14 +30,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const password = passwordInput.value;
         const userId = parseInt(username.replace('traveler', '')); // Extract user ID
 
-        // Proceed with validation
         if (validateCredentials(username, password)) {
+            // Fetch the traveler's data
             fetchTravelerData(userId).then(travelerData => {
                 displayTravelerDashboard(travelerData);
-                return fetchTripsData(userId);
+                // Fetch both trips and destinations data after successful traveler data fetch
+                return Promise.all([fetchTripsData(), fetchDestinationsData()]);
             })
-            .then(tripsData => {
-                displayTrips(tripsData);
+            .then(([tripsData, destinationsData]) => {
+                // Filter the trips to only include those for the logged-in user
+                const userTrips = tripsData.trips.filter(trip => trip.userID === userId);
+                // Now pass both user-specific trips and destinations data to displayTrips
+                displayTrips(userTrips, destinationsData);
+
+                const totalSpentPerYear = calculateTotalSpentPerYear(userTrips, destinationsData);
+                displayTotalSpentPerYear(totalSpentPerYear);
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -68,20 +75,27 @@ function validateCredentials(username, password) {
     }
 }
 
-//Fetch the data
+function calculateTotalSpentPerYear(tripsData, destinationsData) {
+    let totalSpentPerYear = {};
 
-/*fetchTravelerData(userId)
-    .then(travelerData => {
-        displayTravelerDashboard(travelerData);
-        return fetchTripsData(userId); // Assuming you will modify fetchTripsData to take and use travelerId
-    })
-    .then(allTripsData => {
-        const travelerTrips = allTripsData.trips.filter(trip => trip.userID === userId);
-        displayTrips(travelerTrips);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        displayLoginError();
+    tripsData.forEach(trip => {
+        const destination = destinationsData.find(dest => dest.id === trip.destinationID);
+        if (destination) {
+            // Calculate the cost of the current trip
+            const tripCost = (destination.estimatedLodgingCostPerDay * trip.duration + destination.estimatedFlightCostPerPerson * trip.travelers) * 1.1; // Including 10% agent fee
+            
+            // Extract the year from the trip date
+            const year = new Date(trip.date).getFullYear();
+            
+            // Initialize the year in totalSpentPerYear if it doesn't exist
+            if (!totalSpentPerYear[year]) {
+                totalSpentPerYear[year] = 0;
+            }
+            
+            // Add the cost of the current trip to the total for the year
+            totalSpentPerYear[year] += tripCost;
+        }
     });
 
-    */
+    return totalSpentPerYear;
+}

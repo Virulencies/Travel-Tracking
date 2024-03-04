@@ -10,7 +10,7 @@
         <h1>Travel Tracker</h1>
     </header>
     <main>
-        <section id="login-section" class="hidden">
+        <section id="login-section">
             <h2>Login</h2>
             <form id="login-form">
                 <div class="form-group">
@@ -26,10 +26,17 @@
         </section>
         <section id="dashboard-section" class="hidden">
             <h2>Dashboard</h2>
-            <!-- Placeholder for dashboard stuff -->
+            <!-- User Information Display -->
+            <div id="user-info">
+                <p id="traveler-name"></p>
+            </div>
+            <div id="total-spent-container"></div>
+            <!-- Trips Summary -->
             <div id="trips-summary">
                 <h3>My Trips</h3>
-                <!-- Placeholder for trips data -->
+                <div id="trips-container">
+                    <!-- Dynamically populated list of trips will go here -->
+                </div>
             </div>
             <div id="new-trip-form">
                 <h3>Add New Trip</h3>
@@ -41,14 +48,15 @@
                       <!-- Destinations options will be populated here -->
                   </select>
                   <button type="submit">Request Trip</button>
-              </form>
+                </form>
             </div>
         </section>
     </main>
     <footer>
         <p>&copy; 2024 Travel Tracker. All rights reserved.</p>
     </footer>
-    <!-- Link to your JavaScript file -->
-    <script src="scripts.js"></script>
+    <!-- Webpack link/connecting part -->
+    <script src="bundle.js"></script>
+
 </body>
 </html>
