@@ -1,16 +1,54 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Webpack Starter Kit</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Tracker</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <img src="./images/turing-logo.png" alt="turing logo">
-  
-  <!-- Do not include the scripts.js or class files here - it is done by the webpack server -->
-  <script src="bundle.js"></script>
-
+    <header>
+        <h1>Travel Tracker</h1>
+    </header>
+    <main>
+        <section id="login-section" class="hidden">
+            <h2>Login</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+        </section>
+        <section id="dashboard-section" class="hidden">
+            <h2>Dashboard</h2>
+            <!-- Placeholder for dashboard stuff -->
+            <div id="trips-summary">
+                <h3>My Trips</h3>
+                <!-- Placeholder for trips data -->
+            </div>
+            <div id="new-trip-form">
+                <h3>Add New Trip</h3>
+                <form id="trip-request-form">
+                  <input type="date" id="trip-date" required>
+                  <input type="number" id="duration" placeholder="Duration (days)" required>
+                  <input type="number" id="travelers" placeholder="Number of Travelers" required>
+                  <select id="destination-select">
+                      <!-- Destinations options will be populated here -->
+                  </select>
+                  <button type="submit">Request Trip</button>
+              </form>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Travel Tracker. All rights reserved.</p>
+    </footer>
+    <!-- Link to your JavaScript file -->
+    <script src="scripts.js"></script>
 </body>
 </html>
