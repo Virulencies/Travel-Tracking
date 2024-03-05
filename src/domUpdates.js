@@ -26,10 +26,8 @@ function displayTrips(tripsData, destinationsData) {
     pendingTrips.sort(sortTripsByDate);
     approvedTrips.sort(sortTripsByDate);
 
-    // concatenate the sorted arrays: pending trips first, then approved trips
     const sortedTrips = pendingTrips.concat(approvedTrips);
 
-    // Iterate over the sorted and concatenated trips to display them
     sortedTrips.forEach(trip => {
         const destination = destinationsData.find(dest => dest.id === trip.destinationID);
         const tripInfo = document.createElement('div');
@@ -40,6 +38,23 @@ function displayTrips(tripsData, destinationsData) {
         `;
         tripsContainer.appendChild(tripInfo);
     });
+}
+
+function displayAddedTrip(trip, message) {
+    const tripsContainer = document.getElementById('trips-container');
+    const newTripElement = document.createElement('div');
+    newTripElement.innerHTML = `
+        <h3>${trip.destinationName} (Trip Booking ID: ${trip.id})</h3>
+        <p>Date: ${trip.date}, Duration: ${trip.duration} days, Status: ${trip.status}</p>
+    `;
+    if(trip.status === 'pending') {
+        tripsContainer.insertBefore(newTripElement, tripsContainer.firstChild);
+    } else {
+        tripsContainer.appendChild(newTripElement);
+    }
+
+    const messageContainer = document.getElementById('trip-submission-message'); // Adjust according to your HTML
+    messageContainer.textContent = message;
 }
 
 function displayLoginError() {
@@ -58,5 +73,16 @@ function displayTotalSpentPerYear(totalSpentPerYear) {
     });
 }
 
+function populateDestinations(destinationsData, destinationSelect) {
+    destinationsData.forEach(destination => {
+        let option = document.createElement('option');
+        option.value = destination.id;
+        option.textContent = destination.destination;
+        option.setAttribute('data-estimated-lodging-cost-per-day', destination.estimatedLodgingCostPerDay);
+        option.setAttribute('data-estimated-flight-cost-per-person', destination.estimatedFlightCostPerPerson);
+        destinationSelect.appendChild(option);
+    });
+}
+
 // Exports
-export { displayTravelerDashboard, displayTravelerInfo, displayTrips, displayLoginError, displayTotalSpentPerYear };
+export { displayTravelerDashboard, displayTravelerInfo, displayTrips, displayLoginError, displayTotalSpentPerYear, displayAddedTrip, populateDestinations };
