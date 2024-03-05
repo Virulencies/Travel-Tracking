@@ -15,6 +15,33 @@ function fetchDestinationsData() {
         .then(response => response.json())
         .then(data => data.destinations)
         .catch(error => console.error('Error fetching destinations data:', error));
+
+        
 }
 
-export { fetchTravelerData, fetchTripsData, fetchDestinationsData };
+function submitTripRequest(tripRequest) {
+    console.log('Trip request data:', tripRequest);
+
+    fetch('http://localhost:3001/api/v1/trips', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(tripRequest)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Success:', data);
+  
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
+export { fetchTravelerData, fetchTripsData, fetchDestinationsData, submitTripRequest };

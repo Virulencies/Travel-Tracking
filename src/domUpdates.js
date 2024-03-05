@@ -17,18 +17,16 @@ function displayTravelerInfo(travelerData) {
 
 function displayTrips(tripsData, destinationsData) {
     const tripsContainer = document.getElementById('trips-container');
-    tripsContainer.innerHTML = ''; // Clear previous entries
+    tripsContainer.innerHTML = '';
 
-    // Separate the trips into pending and approved
     const pendingTrips = tripsData.filter(trip => trip.status === 'pending');
     const approvedTrips = tripsData.filter(trip => trip.status === 'approved');
 
-    // Sort each array by date
     const sortTripsByDate = (tripA, tripB) => new Date(tripA.date) - new Date(tripB.date);
     pendingTrips.sort(sortTripsByDate);
     approvedTrips.sort(sortTripsByDate);
 
-    // Concatenate the sorted arrays: pending trips first, then approved trips
+    // concatenate the sorted arrays: pending trips first, then approved trips
     const sortedTrips = pendingTrips.concat(approvedTrips);
 
     // Iterate over the sorted and concatenated trips to display them
@@ -52,7 +50,7 @@ function displayTotalSpentPerYear(totalSpentPerYear) {
     const totalSpentContainer = document.getElementById('total-spent-container'); // Ensure this element exists in your HTML
     totalSpentContainer.innerHTML = ''; // Clear previous content
 
-    // Create and append elements for each year's total
+    // create and append elements for each year's total
     Object.keys(totalSpentPerYear).forEach(year => {
         const yearTotal = document.createElement('p');
         yearTotal.textContent = `Total spent in ${year}: $${totalSpentPerYear[year].toFixed(2)}`;

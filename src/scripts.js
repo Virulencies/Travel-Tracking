@@ -6,13 +6,20 @@ import './css/styles.scss';
 
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/turing-logo.png'
-import { fetchTravelerData, fetchTripsData, fetchDestinationsData } from './apiCalls.js';
+import { fetchTravelerData, fetchTripsData, fetchDestinationsData, submitTripRequest } from './apiCalls.js';
 import { displayTravelerDashboard, displayTravelerInfo, displayTrips, displayLoginError, displayTotalSpentPerYear } from './domUpdates.js'
 
 console.log('This is the JavaScript entry file - your code begins here.');
 
 //Globals
 //const userId = parseInt(username.replace('traveler', ''));
+const tripRequestForm = document.getElementById('trip-request-form');
+const durationInput = document.getElementById('duration');
+const travelersInput = document.getElementById('travelers');
+const destinationSelect = document.getElementById('destination-select');
+const costDisplay = document.getElementById('cost-display');
+let currentLastId = 203;
+let destinationsData = [];
 
 
 //Login Section
@@ -38,13 +45,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 return Promise.all([fetchTripsData(), fetchDestinationsData()]);
             })
             .then(([tripsData, destinationsData]) => {
-                // Filter the trips to only include those for the logged-in user
-                const userTrips = tripsData.trips.filter(trip => trip.userID === userId);
-                // Now pass both user-specific trips and destinations data to displayTrips
+                // Use destinationsData directly here, no need to reassign
+                const userTrips = tripsData.trips.filter(trip => trip.userID === userId); // Make sure tripsData is structured correctly for filtering
                 displayTrips(userTrips, destinationsData);
 
                 const totalSpentPerYear = calculateTotalSpentPerYear(userTrips, destinationsData);
                 displayTotalSpentPerYear(totalSpentPerYear);
+
+                populateDestinations(destinationsData);
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -60,8 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function validateCredentials(username, password) {
-    // Check if the password is correct
     const isPasswordCorrect = password === 'travel';
+    
     //extract the user ID from the username and validate it
     const userId = parseInt(username.replace('traveler', ''));
     const isUsernameValid = username.startsWith('traveler') && !isNaN(userId) && userId > 0;
@@ -81,21 +89,81 @@ function calculateTotalSpentPerYear(tripsData, destinationsData) {
     tripsData.forEach(trip => {
         const destination = destinationsData.find(dest => dest.id === trip.destinationID);
         if (destination) {
-            // Calculate the cost of the current trip
+            // cost of the current trip
             const tripCost = (destination.estimatedLodgingCostPerDay * trip.duration + destination.estimatedFlightCostPerPerson * trip.travelers) * 1.1; // Including 10% agent fee
             
-            // Extract the year from the trip date
+            // get the year from the trip date
             const year = new Date(trip.date).getFullYear();
             
-            // Initialize the year in totalSpentPerYear if it doesn't exist
+            // initialize the year in totalSpentPerYear if it doesn't exist
             if (!totalSpentPerYear[year]) {
                 totalSpentPerYear[year] = 0;
             }
             
-            // Add the cost of the current trip to the total for the year
             totalSpentPerYear[year] += tripCost;
         }
     });
 
     return totalSpentPerYear;
 }
+
+function populateDestinations(destinationsData) {
+    const destinationSelect = document.getElementById('destination-select');
+    destinationsData.forEach(destination => {
+        const option = document.createElement('option');
+        option.value = destination.id;
+        option.textContent = destination.destination;
+        destinationSelect.appendChild(option);
+    });
+}
+
+tripRequestForm.addEventListener('input', () => {
+    // ensure we have a selected destination and all other valid inputs in the required fields
+    const selectedDestination = destinationsData.find(dest => dest.id === parseInt(destinationSelect.value));
+    const duration = parseInt(durationInput.value) || 0;
+    const travelers = parseInt(travelersInput.value) || 0;
+
+    if (selectedDestination && duration > 0 && travelers > 0) {
+        const costPerPerson = selectedDestination.estimatedFlightCostPerPerson + (selectedDestination.estimatedLodgingCostPerDay * duration);
+        const totalCost = costPerPerson * travelers;
+        const totalCostWithFee = totalCost * 1.1; // + 10% agent fee
+
+        // need to check if costDisplay element even exists before attempting to update it apparently
+        if (costDisplay) {
+            costDisplay.textContent = `Estimated Cost: $${totalCostWithFee.toFixed(2)}`;
+        } else {
+            console.error('Estimated cost display element not found');
+        }
+    } else {
+        // handle cases where input values are not valid for cost calculation
+        if (costDisplay) {
+            costDisplay.textContent = "Estimated Cost: $0.00";
+        }
+    }
+});
+
+document.getElementById('trip-request-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const userID = parseInt(document.getElementById('username').value.replace('traveler', ''));
+    const destinationID = parseInt(document.getElementById('destination-select').value);
+    const travelers = parseInt(document.getElementById('travelers').value);
+    const date = document.getElementById('trip-date').value.replace(/-/g, '/');
+    const duration = parseInt(document.getElementById('duration').value);
+    const suggestedActivities = [];
+
+    currentLastId += 1;
+
+    const tripRequest = {
+        id: currentLastId,
+        userID,
+        destinationID,
+        travelers,
+        date,
+        duration,
+        status: 'pending',
+        suggestedActivities
+    };
+
+    submitTripRequest(tripRequest);
+});
