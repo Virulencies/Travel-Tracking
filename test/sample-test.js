@@ -41,4 +41,4 @@ describe('calculateTotalSpentPerYear function', function () {
     expect(result['2022']).to.equal(expectedTotalSpent2022);
     expect(result['2023']).to.equal(expectedTotalSpent2023);
   });
-});
+}); 
