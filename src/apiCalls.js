@@ -22,7 +22,7 @@ function fetchDestinationsData() {
 function submitTripRequest(tripRequest) {
     console.log('Trip request data:', tripRequest);
 
-    fetch('http://localhost:3001/api/v1/trips', {
+    return fetch('http://localhost:3001/api/v1/trips', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -31,16 +31,9 @@ function submitTripRequest(tripRequest) {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Network response not ok');
+            throw new Error(`Network response was not ok, status: ${response.status}`);
         }
         return response.json();
-    })
-    .then(data => {
-        console.log('Success:', data);
-  
-    })
-    .catch((error) => {
-        console.error('Error:', error);
     });
 }
 
