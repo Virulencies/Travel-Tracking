@@ -16,7 +16,7 @@ function fetchDestinationsData() {
         .then(data => data.destinations)
         .catch(error => console.error('Error fetching destinations data:', error));
 
-        
+
 }
 
 function submitTripRequest(tripRequest) {
@@ -29,12 +29,12 @@ function submitTripRequest(tripRequest) {
         },
         body: JSON.stringify(tripRequest)
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Network response was not ok, status: ${response.status}`);
-        }
-        return response.json();
-    });
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Network response was not ok, status: ${response.status}`);
+            }
+            return response.json();
+        });
 }
 
 export { fetchTravelerData, fetchTripsData, fetchDestinationsData, submitTripRequest };

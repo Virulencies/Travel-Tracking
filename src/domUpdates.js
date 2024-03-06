@@ -9,7 +9,7 @@ function displayTravelerDashboard(travelerData) {
 function displayTrips(tripsData, destinationsData) {
     const pendingTripsContainer = document.getElementById('pending-trips-container');
     const approvedTripsContainer = document.getElementById('approved-trips-container');
-    
+
     pendingTripsContainer.innerHTML = '';
     approvedTripsContainer.innerHTML = '';
 
@@ -45,7 +45,7 @@ function displayAddedTrip(trip, message) {
         <h3>${trip.destinationName} (Trip Booking ID: ${trip.id})</h3>
         <p>Date: ${trip.date}, Duration: ${trip.duration} days, Status: ${trip.status}</p>
     `;
-    if(trip.status === 'pending') {
+    if (trip.status === 'pending') {
         tripsContainer.insertBefore(newTripElement, tripsContainer.firstChild);
     } else {
         tripsContainer.appendChild(newTripElement);

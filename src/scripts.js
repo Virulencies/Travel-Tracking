@@ -45,18 +45,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 displayTravelerDashboard(travelerData);
                 return Promise.all([fetchTripsData(), fetchDestinationsData()]);
             })
-            .then(([tripsData, destinationsData]) => {
-                const userTrips = tripsData.trips.filter(trip => trip.userID === userId);
-                displayTrips(userTrips, destinationsData);
+                .then(([tripsData, destinationsData]) => {
+                    const userTrips = tripsData.trips.filter(trip => trip.userID === userId);
+                    displayTrips(userTrips, destinationsData);
 
-                const totalSpentPerYear = calculateTotalSpentPerYear(userTrips, destinationsData);
-                displayTotalSpentPerYear(totalSpentPerYear);
+                    const totalSpentPerYear = calculateTotalSpentPerYear(userTrips, destinationsData);
+                    displayTotalSpentPerYear(totalSpentPerYear);
 
-                populateDestinations(destinationsData, destinationSelect);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+                    populateDestinations(destinationsData, destinationSelect);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
 
             loginSection.classList.add('hidden');
             dashboardSection.classList.remove('hidden');
@@ -69,20 +69,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     [dateInput, durationInput, travelersInput, destinationSelect].forEach(field => {
         field.addEventListener('input', updateEstimatedCost);
-    }); 
+    });
 
-    
+
 
     tripRequestForm.addEventListener('input', () => {
         const selectedDestination = destinationsData.find(dest => dest.id === parseInt(destinationSelect.value));
         const duration = parseInt(durationInput.value) || 0;
         const travelers = parseInt(travelersInput.value) || 0;
-    
+
         if (selectedDestination && duration > 0 && travelers > 0) {
             const costPerPerson = selectedDestination.estimatedFlightCostPerPerson + (selectedDestination.estimatedLodgingCostPerDay * duration);
             const totalCost = costPerPerson * travelers;
             const totalCostWithFee = totalCost * 1.1;
-    
+
             if (costDisplay) {
                 costDisplay.textContent = `Estimated Cost: $${totalCostWithFee.toFixed(2)}`;
             } else {
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', () => {
             const targetId = button.getAttribute('data-target');
             const targetElement = document.getElementById(targetId);
-            
+
             targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
     });
@@ -115,7 +115,7 @@ document.getElementById('logout-button').addEventListener('click', () => {
 });
 
 
-document.getElementById('trip-request-form').addEventListener('submit', function(event) {
+document.getElementById('trip-request-form').addEventListener('submit', function (event) {
     event.preventDefault();
 
     const userID = parseInt(document.getElementById('username').value.replace('traveler', ''));
@@ -127,7 +127,7 @@ document.getElementById('trip-request-form').addEventListener('submit', function
     const destinationName = destinationSelect.options[destinationSelect.selectedIndex].text;
 
 
-    currentLastId += 1; 
+    currentLastId += 1;
 
     const tripRequest = {
         id: ++currentLastId,
@@ -141,18 +141,18 @@ document.getElementById('trip-request-form').addEventListener('submit', function
     };
 
     submitTripRequest(tripRequest)
-    .then(response => {
-        const completeTrip = {
-            ...response.newTrip, 
-            destinationName,
-        };
+        .then(response => {
+            const completeTrip = {
+                ...response.newTrip,
+                destinationName,
+            };
 
-        displayAddedTrip(completeTrip, "Trip added! An agent will review your plan soon!");
-        tripRequestForm.reset(); 
-    })
-    .catch(error => {
-        console.error('Error submitting trip request:', error);
-    });
+            displayAddedTrip(completeTrip, "Trip added! An agent will review your plan soon!");
+            tripRequestForm.reset();
+        })
+        .catch(error => {
+            console.error('Error submitting trip request:', error);
+        });
 
 });
 
@@ -164,7 +164,7 @@ function validateCredentials(username, password) {
     const isUsernameValid = username.startsWith('traveler') && !isNaN(userId) && userId > 0;
 
     if (isUsernameValid && isPasswordCorrect) {
-       
+
         return true;
     } else {
         return false;
@@ -175,7 +175,7 @@ function initializeCurrentLastId() {
     fetchTripsData()
         .then(tripsData => {
             const maxId = tripsData.trips.reduce((max, trip) => Math.max(max, trip.id), 0);
-            currentLastId = maxId; 
+            currentLastId = maxId;
         })
         .catch(error => console.error('Error fetching trips data:', error));
 }
@@ -188,13 +188,13 @@ function calculateTotalSpentPerYear(tripsData, destinationsData) {
         const destination = destinationsData.find(dest => dest.id === trip.destinationID);
         if (destination) {
             const tripCost = (destination.estimatedLodgingCostPerDay * trip.duration + destination.estimatedFlightCostPerPerson * trip.travelers) * 1.1; // Including 10% agent fee
-            
+
             const year = new Date(trip.date).getFullYear();
-            
+
             if (!totalSpentPerYear[year]) {
                 totalSpentPerYear[year] = 0;
             }
-            
+
             totalSpentPerYear[year] += tripCost;
         }
     });
@@ -205,7 +205,7 @@ function calculateTotalSpentPerYear(tripsData, destinationsData) {
 
 function updateEstimatedCost() {
     let selectedOption = destinationSelect.options[destinationSelect.selectedIndex];
-    console.log('Selected Option:', selectedOption); 
+    console.log('Selected Option:', selectedOption);
 
     if (!selectedOption) {
         console.log('No option selected, exiting updateEstimatedCost');
