@@ -60,6 +60,7 @@ section {
   h2 {
     font-size: 1.5em;
     margin-bottom: 15px;
+
   }
 
   form {
@@ -148,7 +149,7 @@ footer {
   top: 50px; 
   width: 100%;
   background: $primary-color;
-  padding: 10px 0;
+  padding: 5px 0;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   z-index: 9;
 
@@ -183,6 +184,20 @@ footer {
   }
 }
 
+
+.dashboard-section h2 {
+  text-shadow: 
+    -1px -1px 0 #0d0c0c, 
+    1px -1px 0 #0d0c0c, 
+    -1px 1px 0 #0d0c0c, 
+    1px 1px 0 #0d0c0c; 
+}
+
 #login-section h2 {
   text-align: center;
+  text-shadow: 
+      -2px -2px 0 #000,
+      2px -2px 0 #000,
+      -2px 2px 0 #000,
+      2px 2px 0 #000;
 }

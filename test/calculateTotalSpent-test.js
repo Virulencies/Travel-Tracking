@@ -1,10 +1,10 @@
-function calculateTotalSpentPerYear(tripsData, destinationsData) {
+function calculateTotalSpentPerYear(sampleTripsData, sampleDestinationsData) {
     let totalSpentPerYear = {};
-
-    tripsData.forEach(trip => {
-        const destination = destinationsData.find(dest => dest.id === trip.destinationID);
+    console.log("gdfgdfgegertg", typeof sampleTripsData);
+    sampleTripsData.trips.forEach(trip => {
+        const destination = sampleDestinationsData.find(dest => dest.id === trip.destinationID);
         if (destination) {
-            const tripCost = (destination.estimatedLodgingCostPerDay * trip.duration + destination.estimatedFlightCostPerPerson * trip.travelers) * 1.1; // Including 10% agent fee
+            const tripCost = (destination.estimatedLodgingCostPerDay * trip.duration + destination.estimatedFlightCostPerPerson * trip.travelers) * 1.1;
             
             const year = new Date(trip.date).getFullYear();
             

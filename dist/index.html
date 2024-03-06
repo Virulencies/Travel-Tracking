@@ -9,16 +9,15 @@
     <header>
         <h1>Travel Tracker</h1>
     </header>
-  <nav id="main-nav" class="hidden">
-      <button data-target="dashboard-section">Home</button>
-      <button data-target="pending-trips-section">Pending Trips</button>
-      <button data-target="approved-trips-section">Approved Trips</button>
+    <nav id="main-nav" class="hidden" aria-label="Main Navigation">
+      <button data-target="dashboard-section" aria-controls="dashboard-section">Home</button>
+      <button data-target="pending-trips-section" aria-controls="pending-trips-section">Pending Trips</button>
+      <button data-target="approved-trips-section" aria-controls="approved-trips-section">Approved Trips</button>
       <button data-target="new-trip-form">New Trip</button>
       <button id="logout-button">Log Out</button>
-
   </nav>
     <main>
-        <section id="login-section">
+        <section id="login-section" aria-labelledby="login-section">
             <h2>Ready for Your Next Trip?</h2>
             <form id="login-form">
                 <div class="form-group">
@@ -32,7 +31,7 @@
                 <button type="submit">Login</button>
             </form>
         </section>
-        <section id="dashboard-section" class="hidden">
+        <section id="dashboard-section" class="hidden" aria-labelledby="dashboard-title">
             <h2>Your Home</h2>
             
             <div id="user-info">
@@ -53,10 +52,10 @@
             <div id="new-trip-form">
                 <h3>Add New Trip</h3>
                 <form id="trip-request-form">
-                  <input type="date" id="trip-date" required>
-                  <input type="number" id="duration" placeholder="Duration (days)" required>
-                  <input type="number" id="travelers" placeholder="Number of Travelers" required>
-                  <select id="destination-select">
+                  <input type="date" id="trip-date" aria-label="Trip Date" required>
+                  <input type="number" id="duration" placeholder="Duration (days)" aria-label="Duration in days" required>
+                  <input type="number" id="travelers" placeholder="Number of Travelers" aria-label="Number of Travelers" required>
+                  <select id="destination-select" aria-label="Select Destination">
                   </select>
                   <button type="submit">Request Trip</button>
                 </form>
@@ -71,7 +70,7 @@
         </section>
     </main>
     <footer>
-        <p>&copy; 2024 Travel Tracker. All rights reserved.</p>
+        <p>&copy; 2024 Turing Travel. All rights reserved.</p>
     </footer>
     <!-- Webpack link/connecting part -->
     <script src="bundle.js"></script>
