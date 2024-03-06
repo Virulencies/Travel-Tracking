@@ -3,7 +3,7 @@
 function displayTravelerDashboard(travelerData) {
     // Assuming your HTML has a div or some container with this ID where you want to display the user's name
     const travelerName = document.getElementById('traveler-name');
-    travelerName.textContent = `Welcome back, ${travelerData.name}!`;
+    travelerName.textContent = `Welcome back, ${travelerData.name}! Here are your trip spending details:`;
 
     // Add more details as needed, such as traveler type, etc.
     // For example, if you want to display the traveler's type:
@@ -16,28 +16,41 @@ function displayTravelerInfo(travelerData) {
 }
 
 function displayTrips(tripsData, destinationsData) {
-    const tripsContainer = document.getElementById('trips-container');
-    tripsContainer.innerHTML = '';
+    const pendingTripsContainer = document.getElementById('pending-trips-container');
+    const approvedTripsContainer = document.getElementById('approved-trips-container');
+    
+    // Clear out the current list to prepare for the updated list
+    pendingTripsContainer.innerHTML = '';
+    approvedTripsContainer.innerHTML = '';
 
+    // Filter the tripsData into approved and pending
     const pendingTrips = tripsData.filter(trip => trip.status === 'pending');
-    const approvedTrips = tripsData.filter(trip => trip.status === 'approved');
+    const approvedTrips = tripsData.filter(trip => trip.status === 'approved' || trip.status === 'ongoing');
 
-    const sortTripsByDate = (tripA, tripB) => new Date(tripA.date) - new Date(tripB.date);
-    pendingTrips.sort(sortTripsByDate);
-    approvedTrips.sort(sortTripsByDate);
+    // Sort the trips by date if needed
+    // ... sorting logic here
 
-    const sortedTrips = pendingTrips.concat(approvedTrips);
-
-    sortedTrips.forEach(trip => {
-        const destination = destinationsData.find(dest => dest.id === trip.destinationID);
-        const tripInfo = document.createElement('div');
-        tripInfo.classList.add('trip');
-        tripInfo.innerHTML = `
-            <h3>${destination ? destination.destination : 'Unknown Destination'} (Trip Booking ID: ${trip.id})</h3>
-            <p>Date: ${trip.date}, Duration: ${trip.duration} days, Status: ${trip.status}</p>
-        `;
-        tripsContainer.appendChild(tripInfo);
+    // Iterate over the trips and append them to their respective containers
+    pendingTrips.forEach(trip => {
+        const tripElement = createTripElement(trip, destinationsData);
+        pendingTripsContainer.appendChild(tripElement);
     });
+
+    approvedTrips.forEach(trip => {
+        const tripElement = createTripElement(trip, destinationsData);
+        approvedTripsContainer.appendChild(tripElement);
+    });
+}
+
+function createTripElement(trip, destinationsData) {
+    const destination = destinationsData.find(dest => dest.id === trip.destinationID);
+    const tripElement = document.createElement('div');
+    tripElement.className = 'trip';
+    tripElement.innerHTML = `
+        <h4>${destination ? destination.destination : 'Unknown Destination'} (Booking ID: ${trip.id})</h4>
+        <p>Date: ${trip.date}, Duration: ${trip.duration} days, Status: ${trip.status.charAt(0).toUpperCase() + trip.status.slice(1)}</p>
+    `;
+    return tripElement;
 }
 
 function displayAddedTrip(trip, message) {
@@ -68,7 +81,7 @@ function displayTotalSpentPerYear(totalSpentPerYear) {
     // create and append elements for each year's total
     Object.keys(totalSpentPerYear).forEach(year => {
         const yearTotal = document.createElement('p');
-        yearTotal.textContent = `Total spent in ${year}: $${totalSpentPerYear[year].toFixed(2)}`;
+        yearTotal.textContent = `You've spent $${totalSpentPerYear[year].toFixed(2)} on trips in ${year}`;
         totalSpentContainer.appendChild(yearTotal);
     });
 }

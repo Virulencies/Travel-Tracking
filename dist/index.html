@@ -9,9 +9,17 @@
     <header>
         <h1>Travel Tracker</h1>
     </header>
+  <nav id="main-nav" class="hidden">
+      <button data-target="dashboard-section">Home</button>
+      <button data-target="pending-trips-section">Pending Trips</button>
+      <button data-target="approved-trips-section">Approved Trips</button>
+      <button data-target="new-trip-form">New Trip</button>
+      <button id="logout-button">Log Out</button>
+
+  </nav>
     <main>
         <section id="login-section">
-            <h2>Login</h2>
+            <h2>Ready for Your Next Trip?</h2>
             <form id="login-form">
                 <div class="form-group">
                     <label for="username">Username:</label>
@@ -25,19 +33,28 @@
             </form>
         </section>
         <section id="dashboard-section" class="hidden">
-            <h2>Dashboard</h2>
+            <h2>Your Home</h2>
             <!-- User Information Display -->
+            
             <div id="user-info">
-                <p id="traveler-name"></p>
-            </div>
-            <div id="total-spent-container"></div>
-            <!-- Trips Summary -->
-            <div id="trips-summary">
-                <h3>My Trips</h3>
-                <div id="trips-container">
-                    <!-- Dynamically populated list of trips will go here -->
-                </div>
-            </div>
+              <p id="traveler-name"></p>
+          </div>
+          <div id="total-spent-container"></div>
+          <!-- Pending Trips Section -->
+          <div id="pending-trips-section">
+              <h3>Pending Trips</h3>
+              <div id="pending-trips-container">
+                  <!-- Dynamically populated list of pending trips will go here -->
+              </div>
+          </div>
+          <!-- Approved Trips Section -->
+          <div id="approved-trips-section">
+              <h3>Approved Trips</h3>
+              <div id="approved-trips-container">
+                  <!-- Dynamically populated list of approved trips will go here -->
+              </div>
+          </div>
+
             <div id="new-trip-form">
                 <h3>Add New Trip</h3>
                 <form id="trip-request-form">
@@ -51,7 +68,7 @@
                 </form>
                 <div id="estimated-cost-container">
                   <p id="estimated-cost">Estimated Cost: $0.00</p>
-                  <button onclick="document.getElementById('estimated-cost').textContent = 'Test Update: $100.00';">Test Update Cost</button>
+              <!-- <button onclick="document.getElementById('estimated-cost').textContent = 'Test Update: $100.00';">Test Update Cost</button> -->
 
                 </div>
                 <div id="trip-submission-message"></div>

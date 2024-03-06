@@ -88,6 +88,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             loginSection.classList.add('hidden');
             dashboardSection.classList.remove('hidden');
+            document.getElementById('main-nav').classList.remove('hidden');
+
         } else {
             alert('Invalid Username or Password. Please try again.');
         }
@@ -126,6 +128,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('#main-nav button').forEach(button => {
+        button.addEventListener('click', () => {
+            const targetId = button.getAttribute('data-target');
+            const targetElement = document.getElementById(targetId);
+            
+            targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+});
+
+document.getElementById('logout-button').addEventListener('click', () => {
+
+    window.location.reload();
+});
+
 
 function validateCredentials(username, password) {
     const isPasswordCorrect = password === 'travel';
