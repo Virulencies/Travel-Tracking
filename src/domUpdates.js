@@ -1,36 +1,21 @@
 
 
 function displayTravelerDashboard(travelerData) {
-    // Assuming your HTML has a div or some container with this ID where you want to display the user's name
     const travelerName = document.getElementById('traveler-name');
     travelerName.textContent = `Welcome back, ${travelerData.name}! Here are your trip spending details:`;
 
-    // Add more details as needed, such as traveler type, etc.
-    // For example, if you want to display the traveler's type:
-    // const travelerTypeEl = document.getElementById('traveler-type');
-    // travelerTypeEl.textContent = `Type: ${travelerData.travelerType}`;
-}
-
-function displayTravelerInfo(travelerData) {
-    // Logic to display traveler information
 }
 
 function displayTrips(tripsData, destinationsData) {
     const pendingTripsContainer = document.getElementById('pending-trips-container');
     const approvedTripsContainer = document.getElementById('approved-trips-container');
     
-    // Clear out the current list to prepare for the updated list
     pendingTripsContainer.innerHTML = '';
     approvedTripsContainer.innerHTML = '';
 
-    // Filter the tripsData into approved and pending
     const pendingTrips = tripsData.filter(trip => trip.status === 'pending');
     const approvedTrips = tripsData.filter(trip => trip.status === 'approved' || trip.status === 'ongoing');
 
-    // Sort the trips by date if needed
-    // ... sorting logic here
-
-    // Iterate over the trips and append them to their respective containers
     pendingTrips.forEach(trip => {
         const tripElement = createTripElement(trip, destinationsData);
         pendingTripsContainer.appendChild(tripElement);
@@ -66,17 +51,13 @@ function displayAddedTrip(trip, message) {
         tripsContainer.appendChild(newTripElement);
     }
 
-    const messageContainer = document.getElementById('trip-submission-message'); // Adjust according to your HTML
+    const messageContainer = document.getElementById('trip-submission-message');
     messageContainer.textContent = message;
 }
 
-function displayLoginError() {
-    // Logic to display login error message wip
-}
-
 function displayTotalSpentPerYear(totalSpentPerYear) {
-    const totalSpentContainer = document.getElementById('total-spent-container'); // Ensure this element exists in your HTML
-    totalSpentContainer.innerHTML = ''; // Clear previous content
+    const totalSpentContainer = document.getElementById('total-spent-container');
+    totalSpentContainer.innerHTML = '';
 
     // create and append elements for each year's total
     Object.keys(totalSpentPerYear).forEach(year => {
@@ -98,4 +79,4 @@ function populateDestinations(destinationsData, destinationSelect) {
 }
 
 // Exports
-export { displayTravelerDashboard, displayTravelerInfo, displayTrips, displayLoginError, displayTotalSpentPerYear, displayAddedTrip, populateDestinations };
+export { displayTravelerDashboard, displayTrips, displayTotalSpentPerYear, displayAddedTrip, populateDestinations };
