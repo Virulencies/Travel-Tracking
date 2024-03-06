@@ -16,7 +16,6 @@ function fetchDestinationsData() {
         .then(data => data.destinations)
         .catch(error => console.error('Error fetching destinations data:', error));
 
-
 }
 
 function submitTripRequest(tripRequest) {

@@ -39,17 +39,16 @@ function createTripElement(trip, destinationsData) {
 }
 
 function displayAddedTrip(trip, message) {
-    const tripsContainer = document.getElementById('trips-container');
+    const containerId = trip.status === 'pending' ? 'pending-trips-container' : 'approved-trips-container';
+    const tripsContainer = document.getElementById(containerId);
+
     const newTripElement = document.createElement('div');
     newTripElement.innerHTML = `
         <h3>${trip.destinationName} (Trip Booking ID: ${trip.id})</h3>
         <p>Date: ${trip.date}, Duration: ${trip.duration} days, Status: ${trip.status}</p>
     `;
-    if (trip.status === 'pending') {
-        tripsContainer.insertBefore(newTripElement, tripsContainer.firstChild);
-    } else {
-        tripsContainer.appendChild(newTripElement);
-    }
+
+    tripsContainer.appendChild(newTripElement);
 
     const messageContainer = document.getElementById('trip-submission-message');
     messageContainer.textContent = message;
@@ -59,7 +58,6 @@ function displayTotalSpentPerYear(totalSpentPerYear) {
     const totalSpentContainer = document.getElementById('total-spent-container');
     totalSpentContainer.innerHTML = '';
 
-    // create and append elements for each year's total
     Object.keys(totalSpentPerYear).forEach(year => {
         const yearTotal = document.createElement('p');
         yearTotal.textContent = `You've spent $${totalSpentPerYear[year].toFixed(2)} on trips in ${year}`;

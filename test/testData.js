@@ -42,7 +42,17 @@ const sampleTripsData = {
             travelers: 4,
             date: "2023/04/25",
             duration: 12,
-            status: "approved",
+            status: "pending",
+            suggestedActivities: []
+        },
+        {
+            id: 5,
+            userID: 46,
+            destinationID: 51,
+            travelers: 2,
+            date: "2024/04/25",
+            duration: 12,
+            status: "pending",
             suggestedActivities: []
         }
     ]
@@ -69,3 +79,6 @@ const sampleDestinationsData = [
         estimatedFlightCostPerPerson: 500
     },
 ];
+
+
+module.exports = { sampleTripsData, sampleDestinationsData, users}
